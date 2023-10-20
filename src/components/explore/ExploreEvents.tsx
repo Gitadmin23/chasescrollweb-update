@@ -57,6 +57,7 @@ const SearchEventCard = React.forwardRef(
       })
     }
   }, [event, deletedSavedEvent, saveEvent])    
+  
     return (
       <li ref={ref} key={event.id} className="border-b w-full p-2 px-4 ">
         <div className="flex my-4 items-center w-full justify-between">

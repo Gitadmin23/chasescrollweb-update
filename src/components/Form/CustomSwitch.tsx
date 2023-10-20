@@ -20,7 +20,7 @@ function CustomSwitch(props: Props) {
     return (
 
         <div className=" flex items-center justify-between " >
-            <p>Show Email Address</p>
+            <p>Make my email address public:</p>
             <Switch isChecked={data} onChange={(e)=> handleChange(e.target?.checked)} />
         </div>
     )

@@ -287,11 +287,11 @@ function EditProfile() {
               >
                 <button
                   type="button"
-                  className="font-medium text-gray-700 py-2 rounded-lg"
+                  className="font-bold text-blue-500 py-2 rounded-lg"
                 >
                   Personal Information
                 </button>
-                <span className=" pr-2 text-gray-500"> {ChevronRight()} </span>
+                <span className=" pr-2 text-blue-500"> {ChevronRight()} </span>
               </div>
             </Link>
             <div className="mb-4">

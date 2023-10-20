@@ -436,7 +436,7 @@ function EventDetail(props: Props) {
                                     <button onClick={() => clickHandler()} className=" w-full h-[49px] text-white font-semibold rounded-lg bg-chasescrollBlue text-sm " >My Dashboard</button>
                                     <button
                                         onClick={() => editHandler()}
-                                        disabled={ticketBought}
+                                        // disabled={ticketBought}
                                         className=" w-full h-[49px] text-white font-semibold rounded-lg disabled:bg-opacity-40 bg-chasescrollBlue text-sm " >
                                         Edit Event
                                     </button>

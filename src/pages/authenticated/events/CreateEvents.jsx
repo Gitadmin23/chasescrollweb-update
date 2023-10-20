@@ -400,6 +400,7 @@ const CreateEvents = () => {
               handleSubmit={handleContinue}
               HandleAddTicket={HandleAddTicket}
               handleBack={handleBack}
+              brought={eventData}
             />
           </div>
         )}

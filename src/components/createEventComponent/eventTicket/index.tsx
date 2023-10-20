@@ -17,13 +17,16 @@ interface Props {
     handleChangeOther: any, 
     HandlerDeleteTicket: any, 
     HandleDeleteAllTicket: any, 
-    HandleAddTicket: any 
+    HandleAddTicket: any,
+    brought: any
 }
 
 function CreateEventTicket(props: Props) {
-    const { formData, setFormData, handleChange, handleSubmit, handleChangeOther, HandlerDeleteTicket, HandleDeleteAllTicket, HandleAddTicket } = props
+    const { formData, setFormData, handleChange, handleSubmit, handleChangeOther, HandlerDeleteTicket, HandleDeleteAllTicket, HandleAddTicket, brought } = props
 
     const [showTooltip, setShowTooltip] = useState(false);
+    const [showTicketLimit, setShowTicketLimit] = useState(false);
+    const [showTicketPrice, setShowTicketPrice] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [isFree, setIsFree] = useState(false)
     const [showFunnel, setShowFunnel] = useState(false) 
@@ -33,6 +36,8 @@ function CreateEventTicket(props: Props) {
     // const [categories, setCategories] = useState([])
   
     const toggleTooltip = () => setShowTooltip((state: any) => !state);
+    const toggleTicketLimit = () => setShowTicketLimit((state: any) => !state);
+    const toggleTicketPrice = () => setShowTicketPrice((state: any) => !state);
     const toggleFunnel = () => setShowFunnel((state: any) => !state);
     const toggleStatus = () => {
         setIsFree(state => !state)
@@ -47,7 +52,7 @@ function CreateEventTicket(props: Props) {
 
     React.useEffect(()=> {
         setIsFree(formData?.productTypeData?.ticketType === "Free" ? true : false)
-    }, [])
+    }, []) 
     
   
     const clickHandler =async()=> {
@@ -118,9 +123,10 @@ function CreateEventTicket(props: Props) {
                         }
                         htmlFor="isPaid"  >
                         <Checkbox 
+                            disabled={!brought?.isBought}
                             type="checkbox"
                             className="h-4 w-4 text-blue-600 text-sm md:text-base"
-                            isChecked={isFree}
+                            isChecked={!isFree}
                             id="isPaid"
                             onChange={toggleStatus}  />
                         Paid
@@ -133,9 +139,10 @@ function CreateEventTicket(props: Props) {
                         }
                         htmlFor="isFree" >
                             <Checkbox 
+                                disabled={!brought?.isBought}
                                 type="checkbox"
                                 className="form-checkbox h-4 w-4 text-blue-600 text-sm md:text-base"
-                                isChecked={!isFree}
+                                isChecked={isFree}
                                 id="isFree"
                                 onChange={toggleStatus} />
                             Free
@@ -152,11 +159,11 @@ function CreateEventTicket(props: Props) {
                                     </label>
                                     <div className="flex ">
                                         <Input
-                                        h={"45px"}
+                                        h={"45px"} 
                                             type="text"
                                             className="block text-xs md:text-sm w-full px-3 py-2 border rounded-lg shadow-sm placeholder-gr00 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                             placeholder="Enter Name"
-                                            disabled={formData.productTypeData[index]?.ticketType === "Free" ? true : false}
+                                            disabled={brought?.isBought || formData.productTypeData[index]?.ticketType === "Free" ? true : false}
                                             value={formData.productTypeData[index]?.ticketType}
                                             name="ticketType"
                                             onChange={e => handleChange(index, "ticketType", e.target.value)}
@@ -164,8 +171,12 @@ function CreateEventTicket(props: Props) {
                                     </div>
                                 </div>
                                 <div className=" w-full">
-                                    <label className="block text-gray-700 font-medium mb-2">
+                                    <label className="flex items-center justify-between gap-4 text-gray-700 font-medium mb-2">
                                         Enter Price
+
+                                    <div className="cursor-pointer " onClick={toggleTicketPrice}>
+                                        <QuestionIcon />
+                                    </div>
                                     </label>
                                     <div className="flex gap-2">
                                         <Input
@@ -174,7 +185,7 @@ function CreateEventTicket(props: Props) {
                                             className="block text-xs md:text-sm w-full px-3 py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                             placeholder="Enter amount"
                                             value={formData.productTypeData[index]?.ticketPrice}
-                                            disabled={formData.productTypeData[index]?.ticketType === "Free" ? true : false}
+                                            disabled={brought?.isBought || formData.productTypeData[index]?.ticketType === "Free" ? true : false}
                                             name="ticketPrice"
                                             onChange={e => handleChange(index, "ticketPrice", e.target.value)}
                                         /> 
@@ -182,11 +193,15 @@ function CreateEventTicket(props: Props) {
                                 </div> 
                             </div> 
                             <div className="w-full">
-                                <label className="block text-gray-700 font-medium mb-2">
+                                <label className="flex items-center justify-between gap-4 text-gray-700 font-medium mb-2">
                                     Indicate total number of tickets available to be sold for your
                                     events
+
+                                    <div className="cursor-pointer " onClick={toggleTicketLimit}>
+                                        <QuestionIcon />
+                                    </div>
                                 </label>
-                                <Input
+                                <Input 
                                         h={"45px"}
                                     type="number"
                                     className="block w-full px-3 py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
@@ -206,6 +221,7 @@ function CreateEventTicket(props: Props) {
                                 </label>
                                 <Input
                                         h={"45px"}
+                                        disabled={brought?.isBought}
                                     type="number"
                                     className="block w-full px-3 py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                     placeholder="Type in minimum no of Tickets"
@@ -214,6 +230,7 @@ function CreateEventTicket(props: Props) {
                                     onChange={e => handleMaxTicket(index, "minTicketBuy", e.target.value)} />
                                 <Input
                                         h={"45px"}
+                                        disabled={brought?.isBought}
                                     type="number"
                                     className="block mt-4 w-full px-3 py-2 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                     placeholder="Type in maximum no. of Tickets"
@@ -234,10 +251,12 @@ function CreateEventTicket(props: Props) {
                 })}
 
                 {formData.productTypeData[0]?.ticketType !== "Free" && (
-                    <button onClick={()=> HandleAddTicket(formData?.productTypeData?.length)} className=" mt-3 font-bold border text-white bg-blue-600 rounded-md py-2 w-fit px-3 " >+ Add New Ticket Type</button>
+                    <button 
+                    disabled={brought?.isBought} onClick={()=> HandleAddTicket(formData?.productTypeData?.length)} className=" mt-3 font-bold border text-white bg-blue-600 rounded-md py-2 w-fit px-3 " >+ Add New Ticket Type</button>
                 )} 
                 <Select
                     h={"45px"}
+                    disabled={brought?.isBought}
                     className="block my-4 w-full px-3 border rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                     placeholder="Type in maximum no. of Tickets"
                     value={formData.currency}
@@ -249,12 +268,12 @@ function CreateEventTicket(props: Props) {
                 </Select>  
 
                 <div className="flex w-full mt-2 justify-between">
-                    <div className="flex cursor-pointer" onClick={toggleFunnel}>
+                    <button disabled={!brought?.isBought} className="flex" onClick={toggleFunnel}>
                         <OpenFolderIcon />
                         <span className="text-chasescrollBlue underline hover:text-chasescrollDarkBlue ml-2">
                         Select community funnel
                         </span>
-                    </div>
+                    </button>
                     <div className="cursor-pointer " onClick={toggleTooltip}>
                         <QuestionIcon />
                     </div>
@@ -309,6 +328,47 @@ function CreateEventTicket(props: Props) {
                             </p>
                             <button
                                 onClick={toggleTooltip}
+                                className="text-lg font-bold text-chasescrollBlue"
+                            >
+                                Ok
+                            </button>
+                        </div>
+                    </div>
+                </OverlayWrapper>
+            )}
+            {showTicketPrice && (
+                <OverlayWrapper handleClose={toggleTicketPrice}>
+                    <div className="flex w-fit h-fit p-4">
+                        <div className="bg-white border shadow-lg rounded-[32px] p-8 w-full max-w-xl flex flex-col gap-4 justify-center">
+                            <h1 className="text-xl font-bold">
+                                Price Of Ticket
+                            </h1>
+                            <p className="leading-5">
+                                Price cannot be changed once ticket has been bought by an attendee.
+                            </p>
+                            <button
+                                onClick={toggleTicketPrice}
+                                className="text-lg font-bold text-chasescrollBlue"
+                            >
+                                Ok
+                            </button>
+                        </div>
+                    </div>
+                </OverlayWrapper>
+            )}
+            {showTicketLimit && (
+                <OverlayWrapper handleClose={toggleTicketLimit}>
+                    <div className="flex w-fit h-fit p-4">
+                        <div className="bg-white border shadow-lg rounded-[32px] p-8 w-full max-w-xl flex flex-col gap-4 justify-center">
+                            <h1 className="text-xl font-bold">
+                                Limit Of Created Ticket
+                            </h1>
+                            <p className="leading-5">
+                                Should you wish to edit the total number of ticket, total number of ticket available can only be greater than previous total number of ticket available.
+                                {/* Total number of ticket entered can only be greater than previous ticket limit */}
+                            </p>
+                            <button
+                                onClick={toggleTicketLimit}
                                 className="text-lg font-bold text-chasescrollBlue"
                             >
                                 Ok

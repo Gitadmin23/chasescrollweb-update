@@ -17,6 +17,8 @@ import { toast } from "react-toastify"
 import { videoConfig } from "../../constants"
 import { Avatar, Spinner } from '@chakra-ui/react'
 import { useQueryClient } from "react-query"
+import FileUploader from "../FileUploader"
+import { unescape } from "lodash"
 
 const UploadImage = ({ toggleFileUploader, loadMore }) => {
   const [imageSrc, setImageSrc] = useState(null)
@@ -28,7 +30,8 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
   const [postFile, setPostFile] = useState(null)
   const [loading, setLoading] = useState(false);
   const { sendRequest, isLoading } = useFetch()
-  const { userName, userId, token } = useAuth()
+  const { userName, userId, token } = useAuth();
+  const [url, setUrl] = useState('');
   // const ReactS3Client = new S3(videoConfig);
 
   // query client
@@ -38,7 +41,19 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
     setCaption(value)
   }
 
-  const toggleCaption = () => setShowCaption(state => !state)
+  const toggleCaption = () => setShowCaption(state => !state);
+
+  const handlePick = (url) => {
+    if (url !== undefined || url !== null) {
+      if (url.includes('mp4')) {
+        setVideoSrc(url);
+        setUrl(url);
+      }else {
+        setImageSrc(url);
+        setUrl(url);
+      }
+    }
+  }
 
   const createPost = async () => {
     if (isLoading) {
@@ -50,77 +65,50 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
     console.log({ postFile });
     setLoading(true);
 
-    const mediaType = postFile.type;
 
-    if (mediaType.startsWith('video/')) {
+    if (url.includes('.mp4')) {
       sendRequest(
-        `${UPLOAD_VIDEO}${userId}`,
+        CREATE_POST,
         "POST",
-        formData,
+        {
+          text: caption,
+          mediaRef: url,
+          sourceId: userId,
+          type: "WITH_VIDEO_POST",
+          multipleMediaRef: [
+            url,
+          ],
+        },
         { Authorization: `Bearer ${token}` },
-        true
-      ).then((data) => {
-        sendRequest(
-          CREATE_POST,
-          "POST",
-          {
-            text: caption,
-            mediaRef: data?.fileName,
-            sourceId: userId,
-            type: "WITH_VIDEO_POST",
-            multipleMediaRef: [
-              data?.fileName,
-            ],
-          },
-          { Authorization: `Bearer ${token}` },
-        ).then(() => {
-          setSubmitted(state => !state);
-          loadMore()
-          //queryClient.invalidateQueries(["getFeedsPosts"]);
-          toast.success("video posted successfully.!");
-          setLoading(false);
-        }).catch((error) => {
-          setLoading(false);
-        })
-      }).catch((errorr) => {
+      ).then(() => {
+        setSubmitted(state => !state);
+        loadMore()
+        //queryClient.invalidateQueries(["getFeedsPosts"]);
+        toast.success("video posted successfully.!");
+        setLoading(false);
+      }).catch((error) => {
         setLoading(false);
       })
       return
-    } else if (mediaType.startsWith('image/')) {
+    } else if (url.includes('jpeg') || url.includes('png') || url.includes('jpg')) {
       sendRequest(
-        `${UPLOAD_IMAGE}${userId}`,
+        CREATE_POST,
         "POST",
-        formData,
-        { Authorization: `Bearer ${token}` },
-        true
-      ).then((data) => {
-        console.log({
+        {
           text: caption,
-          mediaRef: data?.fileName,
+          mediaRef: url,
+          multipleMediaRef: [
+            url,
+          ],
           sourceId: userId,
           type: "WITH_IMAGE"
-        });
-        sendRequest(
-          CREATE_POST,
-          "POST",
-          {
-            text: caption,
-            mediaRef: data?.fileName,
-            multipleMediaRef: [
-              data?.fileName,
-            ],
-            sourceId: userId,
-            type: "WITH_IMAGE"
-          },
-          { Authorization: `Bearer ${token}` },
-        ).then(() => {
-          setSubmitted(state => !state);
-          toast.success("image posted successfully");
-          loadMore()
-          //queryClient.invalidateQueries(["getFeedsPosts"]);
-        }).catch((error) => {
-          setLoading(false);
-        })
+        },
+        { Authorization: `Bearer ${token}` },
+      ).then(() => {
+        setSubmitted(state => !state);
+        toast.success("image posted successfully");
+        loadMore()
+        queryClient.invalidateQueries(["getFeedsPosts"]);
       }).catch((error) => {
         setLoading(false);
       })
@@ -277,13 +265,15 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
                     htmlFor="file"
                     className="text-white px-4 py-2.5 w-full rounded-md bg-chasescrollBlue text-sm"
                   >
-                    <input
+                    {/* <input
                       id="file"
                       type="file"
                       onChange={handleFileInputChange}
                       className="hidden"
                     />
                     Select from your desktop
+                  </label> */}
+                  <FileUploader onSuccess={handlePick} />
                   </label>
                 </div>
               </div>

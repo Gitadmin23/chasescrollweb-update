@@ -11,10 +11,7 @@ function UserImages(props: Props) {
         data,
         size,
         font
-    } = props
-
-    console.log(data);
-    
+    } = props 
 
     return ( 
         <div className={` rounded-b-[64px] rounded-tl-[64px] border-[5px] border-[#D0D4EB] w-${size} h-${size} border `}> 
