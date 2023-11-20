@@ -23,7 +23,7 @@ function PastEventsTab() {
     const EventInfo = (event) => {
         return(
             <div 
-                className="flex flex-col items-center justify-center mb-4 py-4 px-6 bg-white shadow rounded-b-[32px] rounded-tl-[32px] w-fit mx-auto"
+                className="flex flex-col items-center justify-center mb-4 py-4 px-6 bg-white shadow rounded-b-[32px] rounded-tl-[32px] mx-auto max-w-3xl"
                 key={event?.id}
                 >
                 <div className="flex flex-col md:flex-row gap-10 w-full items-center mb-2">

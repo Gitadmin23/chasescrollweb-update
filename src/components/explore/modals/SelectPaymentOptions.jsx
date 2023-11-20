@@ -107,11 +107,7 @@ const SelectPaymentOptions = ({ paystackLoading, stripeLoading, closeModal, hand
 										{paystackLoading && <ButtonSpinner />}
 									</div>
 								)}
-							</> 
-						{/* // )} */}
-						{/* {stripeModal && (
-							<Stripecomponent clientSecret={client} config={stripeconfig} closeModal={closeModal} />
-						)} */}
+							</>  
 					</div>
 				</div>
 			</div>

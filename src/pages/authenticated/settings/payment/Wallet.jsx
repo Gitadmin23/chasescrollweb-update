@@ -62,6 +62,7 @@ const Wallet = () => {
 			GET_USER_PRIVATE_PROFILE,
 			"GET",
 			null,
+
 			{ Authorization: `Bearer ${token}` }
 		).then(data => setProfile(data))
 	}

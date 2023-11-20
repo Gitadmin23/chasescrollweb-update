@@ -28,7 +28,7 @@ const CreateEventsHeader = ({ activeStep, setActiveStep, formData }) => {
       return true
     } else if(!formData?.eventType){
       return true
-    } else if(!formData?.eventDescription){
+    } else if(!formData?.eventDescription){ 
       return true
     } else {
       return false   
