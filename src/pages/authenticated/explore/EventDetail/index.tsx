@@ -198,6 +198,8 @@ function EventDetail(props: Props) {
             },
             { Authorization: `Bearer ${token}` }
         ).then((data: any) => {
+            console.log(data);
+            
             if (data?.content?.orderTotal > 0) {
 
                 setConfigStripe({
@@ -215,7 +217,7 @@ function EventDetail(props: Props) {
                     { Authorization: `Bearer ${token}` }
                 ).then((response: any) => {
                     setClientKey(response?.gatewayReferenceID)
-                    setShowStripeForm(true)
+                    // setShowStripeForm(true)
                     // window.open(response?.checkout, "_blank");
                 })
             }
@@ -375,15 +377,7 @@ function EventDetail(props: Props) {
                             </button>
                         )}
                     </>
-                )}
-                {/* {!userId && (
-                    <button
-                        onClick={() => navigate("/")}
-                        className="absolute top-9 z-20 left-2 p-2"
-                    >
-                        <CaretLeftIcon />
-                    </button>
-                )} */}
+                )} 
                 <div className="backdrop-blur-sm absolute inset-0 px-3  -z-20 flex justify-center items-center rounded-b-[16px] rounded-tl-[16px] h-80">
                     <img
                         src={`${CONFIG.RESOURCE_URL}${banner}`}

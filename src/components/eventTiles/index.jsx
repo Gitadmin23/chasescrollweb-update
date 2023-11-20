@@ -68,7 +68,7 @@ const EventTiles = React.forwardRef((props, ref) =>{
 
 
     return ( 
-      <div ref={ref} className=" w-full border rounded-b-[36px] gap-4 rounded-tl-[36px] flex lg:flex-row flex-col items-center py-[11px] px-[15px] " >
+      <div ref={ref} className=" max-w-3xl border rounded-b-[36px] gap-4 rounded-tl-[36px] flex lg:flex-row flex-col items-center py-[11px] px-[15px] " >
         <div className=" w-full lg:w-fit " > 
           <div className="rounded-b-[32px] rounded-tl-[32px]  w-full lg:w-[152px] h-[250px] lg:h-[152px] overflow-hidden">
             {event?.picUrls?.length > 0 ? (

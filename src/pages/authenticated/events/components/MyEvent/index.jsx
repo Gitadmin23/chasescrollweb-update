@@ -61,7 +61,7 @@ function MyEventTab() {
         return (
             <div
                 // to={`${PATH_NAMES.event}/${event.id}`}
-                className="flex flex-col items-center justify-center mb-4 py-4 px-6 bg-white shadow rounded-b-[32px] rounded-tl-[32px] w-full mx-auto lg:w-[80%]"
+                className="flex flex-col items-center justify-center mb-4 py-4 px-6 bg-white shadow rounded-b-[32px] rounded-tl-[32px] w-full mx-auto max-w-3xl "
                 key={event?.id}
             >
                 <div className="flex flex-col md:flex-row gap-6 w-full items-center mb-2">
