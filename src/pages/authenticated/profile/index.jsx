@@ -325,7 +325,7 @@ const Profile_1 = () => {
                 <SecondaryNavbar
                   activeComponent={activeComponent}
                   handleButtonClick={handleButtonClick}
-                  networkCount={network.totalElements}
+                  networkCount={network?.length}
                   postCount={posts?.totalElements}
                   eventCount={events?.totalElements}
                   communityCount={communities?.totalElements}
