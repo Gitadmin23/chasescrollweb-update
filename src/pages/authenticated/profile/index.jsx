@@ -190,14 +190,14 @@ const Profile_1 = () => {
     fetchNetwork()
   }, [userId])
 
-  useEffect(() => {
-    if (ownNetwork) {
-      const isMyFriend = ownNetwork.some(connect => connect.userId === userId)
+  // useEffect(() => {
+  //   if (ownNetwork) {
+  //     const isMyFriend = ownNetwork.some(connect => connect.userId === userId)
 
-      if (isMyFriend) setDisplayConnect(false)
-      else setDisplayConnect(true)
-    }
-  }, [network])
+  //     if (isMyFriend) setDisplayConnect(false)
+  //     else setDisplayConnect(true)
+  //   }
+  // }, [network])
 
   const handleButtonClick = componentName => {
     if (

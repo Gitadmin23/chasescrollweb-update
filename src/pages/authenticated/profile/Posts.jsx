@@ -10,6 +10,7 @@ import { useAuth } from "../../../context/authContext"
 import useInfinteScroller from "../../../hooks/useInfinteScroller"
 import { Spinner, HStack, Box } from "@chakra-ui/react";
 import { FiPlayCircle } from 'react-icons/fi'
+import InfiniteScrollerComponent from "../../../hooks/infiniteScrollerComponent"
 
 const Posts = () => {
   const [showUserPosts, setShowUserPosts] = useState(false)
@@ -46,14 +47,16 @@ const Posts = () => {
   // }, []) 
 
   const [page, setPage] = React.useState(0)
-  const { results, isLoading, lastChildRef } = useInfinteScroller({ url: '/feed/get-users-media-posts?userID=' + userId, pageNumber: page, setPageNumber: setPage, })
+
+  const {isLoading, results, ref} = InfiniteScrollerComponent({url: '/feed/get-users-media-posts?userID=' + userId, limit: 10, filter: "id"})
+  // const { results, isLoading, lastChildRef } = useInfinteScroller({ url: '/feed/get-users-media-posts?userID=' + userId, pageNumber: page, setPageNumber: setPage, })
 
   console.log(results)
 
   const content = results.map((post, index) => {
     if (index === results.length - 1) {
       return (
-        <Box ref={lastChildRef} key={index.toString()} position={'relative'} zIndex={5}>
+        <Box ref={ref} key={index.toString()} position={'relative'} zIndex={5}>
           {post.type === 'WITH_IMAGE' && post?.mediaRef &&
             <img
               key={index.toString()}
@@ -101,7 +104,7 @@ const Posts = () => {
           {post.type === 'WITH_IMAGE' && post?.mediaRef &&
             <img
               key={index.toString()}
-              src={`${CONFIG.RESOURCE_URL}${post?.mediaRef}`}
+              src={post?.mediaRef?.includes("https") ? post?.mediaRef : `${CONFIG.RESOURCE_URL}${post?.mediaRef}`}
               className="rounded-b-[32px] rounded-tl-[32px] w-[170px] h-[170px] object-cover cursor-pointer"
               alt="media from user post"
               onClick={() => {
