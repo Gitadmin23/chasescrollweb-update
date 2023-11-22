@@ -149,7 +149,7 @@ const Thread = forwardRef<any, IProps>
             <>
               {post?.type === "WITH_IMAGE" && (
                 <div onDoubleClick={() => toggleLike()}>
-                  <BlurredImage imageUrl={`${CONFIG.RESOURCE_URL}/${post?.mediaRef}`} />
+                  <BlurredImage imageUrl={post.mediaRef?.includes("https:") ? post?.mediaRef : `${CONFIG.RESOURCE_URL}/${post?.mediaRef}`} />
                 </div>
               )}
             </>
@@ -158,7 +158,7 @@ const Thread = forwardRef<any, IProps>
             <>
               {post?.type === "WITH_IMAGE" && post?.multipleMediaRef?.length <= 1 && (
                 <div onDoubleClick={() => toggleLike()}>
-                  <BlurredImage imageUrl={`${CONFIG.RESOURCE_URL}/${post?.mediaRef}`} />
+                  <BlurredImage imageUrl={post.mediaRef?.includes("https:") ? post?.mediaRef : `${CONFIG.RESOURCE_URL}/${post?.mediaRef}`} />
                 </div>
               )}
             </>
