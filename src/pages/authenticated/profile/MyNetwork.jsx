@@ -325,16 +325,13 @@ const ConnectTab =(props)=> {
 
 
   const [page, setPage] = React.useState(0)
-  // const [results, setResults] = useState([]);
-  // const { isLoading, data,} = useQuery(['getConnections', userId], () => httpService.get(`/user/get-users-connections/${userId}`), {
-  //   onSuccess: (data) => { 
-  //     setResults(data?.data?.);
-  //   }
-  // });
-
-  const {isLoading, isRefetching, results, ref, data} = InfiniteScrollerComponent({url:`/user/get-users-connections/${userId}`, limit: 10, filter: "userId"})
+  const [results, setResults] = useState([]);
+  const { isLoading, data,} = useQuery(['getConnections', userId], () => httpService.get(`/user/get-users-connections/${userId}`), {
+    onSuccess: (data) => { 
+      setResults(data?.data);
+    }
+  });
  
-  console.log(data);
   const friendPerson = async (item) => {
     setLoading(item)
     const data = await sendRequest(
@@ -396,7 +393,7 @@ const ConnectTab =(props)=> {
 
             {(isFriend === "FRIEND_REQUEST_RECIEVED" || isFriend === "FRIEND_REQUEST_SENT" || isFriend === "CONNECTED" || isFriend === "CONNECTFriend") ?
               <>
-                {profile?.publicProfile ? 
+                {data?.publicProfile ? 
                     <button
                       onClick={() => unfriendPerson(profile?.userId)}
                       className={`flex items-center font-semibold justify-center rounded-md py-2 text-xs px-4 lg:text-sm transition-all bg-chasescrollRed text-white `}
@@ -426,13 +423,13 @@ const ConnectTab =(props)=> {
         {/* )} */}
       </div>
     )
-  } 
+  }
 
   return( 
     <div className="flex flex-col w-full my-6 mb-[100px]"> 
       {!isLoading && (
         <> 
-          {results?.map((profile, i) => {   
+          {results?.filter((item)=> !network.includes(item?.userId))?.map((profile, i) => {   
             if (results?.length === i + 1) {
               return( 
                 <div key={profile?.id} className=" my-4 " >
