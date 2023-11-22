@@ -332,8 +332,9 @@ const ConnectTab =(props)=> {
   //   }
   // });
 
-  const {isLoading, isRefetching, results, ref} = InfiniteScrollerComponent({url:`/user/get-users-connections/${userId}`, limit: 10})
+  const {isLoading, isRefetching, results, ref, data} = InfiniteScrollerComponent({url:`/user/get-users-connections/${userId}`, limit: 10, filter: "userId"})
  
+  console.log(data);
   const friendPerson = async (item) => {
     setLoading(item)
     const data = await sendRequest(
@@ -431,7 +432,7 @@ const ConnectTab =(props)=> {
     <div className="flex flex-col w-full my-6 mb-[100px]"> 
       {!isLoading && (
         <> 
-          {results?.filter((item)=> !network.includes(item?.userId))?.map((profile, i) => {   
+          {results?.map((profile, i) => {   
             if (results?.length === i + 1) {
               return( 
                 <div key={profile?.id} className=" my-4 " >
