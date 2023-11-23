@@ -16,7 +16,7 @@ import { useAuth } from "../../context/authContext"
 import { compressFile } from "./FileCompressor"
 import { toast } from "react-toastify"
 import { videoConfig } from "../../constants"
-import { Avatar, Spinner } from '@chakra-ui/react'
+import { Avatar, Progress, Spinner } from '@chakra-ui/react'
 import { useQueryClient } from "react-query"
 // import FileUploader from "../FileUploader"
 import { unescape } from "lodash"
@@ -295,7 +295,7 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
                     />
                     Select from your desktop
                   </label>
-                  { fileUploading && 'Uploading file...'}
+                  { fileUploading && <Progress size={'xs'} width='100%' isIndeterminate />}
                   {/* <FileUploader onSuccess={handlePick} />
                   </label> */}
                 </div>
