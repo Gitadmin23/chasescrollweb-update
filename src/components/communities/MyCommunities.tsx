@@ -15,7 +15,6 @@ interface IProps {
 
 function MyCommunities({ communities, loading, hasError }: IProps) {
   const [search, setSearch] = React.useState('');
-  console.log(communities[0]);
 
   if (loading) {
     return (
@@ -47,7 +46,7 @@ function MyCommunities({ communities, loading, hasError }: IProps) {
                   if (search === '') {
                     return item;
                   } 
-                  if (item.data.name.toLowerCase().includes(search.toLowerCase())) {
+                  if (item.data?.name?.toLowerCase().includes(search?.toLowerCase())) {
                     return item;
                   }
                 })

@@ -36,7 +36,7 @@ const Communities = () => {
 
   const getCommunities = useQuery(['getCommunities', searchVal], () => unsecureHttpService.get(`/group/group`, {
     params: {
-      // searchText: searchVal
+      searchText: searchVal
     }
   }), {
     onSuccess: (data) => {
