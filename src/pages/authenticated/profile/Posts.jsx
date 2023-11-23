@@ -81,7 +81,7 @@ const Posts = () => {
               controls
               autoPlay={false}
             >
-              <source src={`${CONFIG.RESOURCE_URL}${post?.mediaRef}`} type="video/mp4" />
+              <source src={post?.mediaRef.startsWith('https') ? post?.mediaRef:`${CONFIG.RESOURCE_URL}${post?.mediaRef}`} type="video/mp4" />
             </video>
           }
           {
