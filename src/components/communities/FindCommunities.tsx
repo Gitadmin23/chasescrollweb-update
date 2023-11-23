@@ -19,7 +19,7 @@ interface IProps {
   search: () => void
 }
 
-const Community = ({ community }) => {
+const Community = ({ community, search }) => {
   const { userId } = useAuth()
   const queryClient = useQueryClient();
   const { mutate, isLoading } = useMutation({
@@ -27,7 +27,8 @@ const Community = ({ community }) => {
     onSuccess: (data: any) => {
       // call fetchCommunities
       toast.success(data.data.message);
-      queryClient.refetchQueries(['getCommunities']);
+      queryClient.invalidateQueries(['getCommunities', search]);
+      queryClient.invalidateQueries(['getMyCommunities', userId]);
     }
   });
 
@@ -37,6 +38,7 @@ const Community = ({ community }) => {
       // call fetchCommunities
       toast.success(data.data.message);
       queryClient.invalidateQueries(['getCommunities']);
+      queryClient.invalidateQueries(['getMyCommunities', userId]);
     }
   });
 
@@ -133,7 +135,7 @@ function FindCommunities({ communities, loading, hasError, searchText, handleSea
           </div>
       )}
       {communities?.map((community, i) => (
-        <Community community={community} key={i} />
+        <Community community={community} key={i} search={searchText} />
       ))}
     </div>
   )

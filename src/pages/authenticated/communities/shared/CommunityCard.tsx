@@ -37,16 +37,16 @@ function CommunityCard({ community, setSelected, smallScreen = false }: IProps) 
     px='10px'
     width='100%' height='100px' justifyContent='space-between' borderBottomWidth={0.5} borderBottomColor='lightgrey' paddingY='4' cursor='pointer'>
         <HStack paddingRight='10px'>
-            <ProfilePhoto image={community.data?.imgSrc === "string" || !community.data?.imgSrc ? `https://ui-avatars.com/api/?background=random&name=${community?.data?.name}&length=1` : `${CONFIG.RESOURCE_URL}${community?.data?.imgSrc}`} />
+            <ProfilePhoto image={community?.data?.imgSrc === "string" || !community?.data?.imgSrc ? `https://ui-avatars.com/api/?background=random&name=${community?.data?.name}&length=1` : `${CONFIG.RESOURCE_URL}${community?.data?.imgSrc}`} />
 
             <VStack alignItems='flex-start'>
-                <Heading size='sm' as='h4'>{community.data.name.length > 20 ? `${community?.data.name.substring(0, 20)}...` : `${community?.data.name}`}</Heading>
-                <Text>{community?.data.description.length > 20 ? `${community?.data.description.substring(0, 20)}...` : community.data.description}</Text>
+                <Heading size='sm' as='h4'>{community?.data?.name?.length > 20 ? `${community?.data?.name?.substring(0, 20)}...` : `${community?.data.name}`}</Heading>
+                <Text>{community?.data?.description?.length > 20 ? `${community?.data?.description?.substring(0, 20)}...` : community?.data?.description}</Text>
             </VStack>
         </HStack>
 
         <VStack>
-            <Badge colorScheme='blue'>{community.data.memberCount} Members</Badge>
+            <Badge colorScheme='blue'>{community.data?.memberCount} Members</Badge>
         </VStack>
     </HStack>
   )

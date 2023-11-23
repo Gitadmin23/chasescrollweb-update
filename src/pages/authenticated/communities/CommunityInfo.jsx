@@ -10,7 +10,7 @@ import { PATH_NAMES } from '../../../constants/paths.constant'
 import { FiEdit, FiTrash } from 'react-icons/fi'
 import EditCommunity from '@/components/communities/EditModal'
 import httpService from '@/utils/httpService'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { HStack, Spinner } from '@chakra-ui/react'
 import { COLORS } from '../../../utils/colors'
 import { toast } from 'react-toastify'
@@ -21,10 +21,12 @@ const CommunityInfo = () => {
 	const [communityPosts, setCommunityPosts] = useState()
 	const [showModal, setShowModal] = React.useState(false);
 	const [isCreator, setIsCreator] = React.useState(false);
-	const { id } = useParams()
-	const navigation = useNavigate()
-	const { sendRequest } = useFetch()
-	const { token, userId } = useAuth()
+	const { id } = useParams();
+	const navigation = useNavigate();
+	const { sendRequest } = useFetch();
+	const { token, userId } = useAuth();
+
+	const queryClient = useQueryClient();
 
 	const [queryParams] = useSearchParams();
     const hasInfo = queryParams.get('info');
@@ -46,6 +48,23 @@ const CommunityInfo = () => {
 		mutationFn: () => httpService.delete(`/group/group/${id}`),
 		onSuccess: () => {
 			toast.success("Group deleted");
+			queryClient.invalidateQueries(['getJoinedGroups', userId]);
+			navigation(-1);
+		},
+		onError: (error) => {
+			toast.error('Something went wrong');
+			console.log(error);
+		}
+	})
+
+	const leaveGroup = useMutation({
+		mutationFn: () => httpService.delete(`/group/leave-group`, {
+			groupID: id,
+			userID: userId,
+		}),
+		onSuccess: () => {
+			toast.success("Group deleted");
+			queryClient.invalidateQueries(['getJoinedGroups', userId]);
 			navigation(-1);
 		},
 		onError: (error) => {
@@ -72,7 +91,6 @@ const CommunityInfo = () => {
 			{ Authorization: `Bearer ${token}` }
 		)
 		if (data) {
-			console.log(data);
 			setCommunityMembers(data?.content);
 		}
 	}
@@ -118,7 +136,7 @@ const CommunityInfo = () => {
 									<img
 										src={community ? `${CONFIG.RESOURCE_URL}${community?.data?.imgSrc}` : `https://ui-avatars.com/api/?background=random&name=${community?.data?.name}&length=1`}
 										alt=""
-										className='w-full rounded-b-full rounded-tl-full'
+										className='w-full h-full object-cover rounded-b-full rounded-tl-full'
 									/>
 								</div>
 								<div className="flex flex-col gap-2">
@@ -130,10 +148,21 @@ const CommunityInfo = () => {
 									{ !hasInfo && (
 										<div className="flex items-center gap-4">
 						
-											<div className="w-[76px] h-16 cursor-pointer bg-chasescrollBgBlue rounded-lg text-chasescrollBlue text-center flex flex-col p-2 justify-between items-center text-sm font-medium">
-												<LeaveIcon />
-												Exit
-											</div>
+											<button 
+											onClick={() => leaveGroup.mutate()}
+											className="w-[76px] h-16 cursor-pointer bg-chasescrollBgBlue rounded-lg text-chasescrollBlue text-center flex flex-col p-2 justify-between items-center text-sm font-medium">
+												{ !leaveGroup.isLoading && (
+													<>
+														<LeaveIcon />
+														Exit
+													</>
+												)}
+												{
+													leaveGroup.isLoading && (
+														<Spinner color='blue' size='md' colorScheme='blue' />
+													)
+												}
+											</button>
 										</div>
 									)}
 

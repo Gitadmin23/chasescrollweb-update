@@ -14,7 +14,7 @@ const Community = () => {
 	const { userId } = useAuth()
 
 	// react-query
-	const getJoinGroups = useQuery(['getJoinedGroups'], () => httpService.get(`${GET_JOINED_GROUPS}?userID=${userId}`));
+	const getJoinGroups = useQuery(['getJoinedGroups', userId], () => httpService.get(`${GET_JOINED_GROUPS}?userID=${userId}`));
 
 	return (
 		<>
