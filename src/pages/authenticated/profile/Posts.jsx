@@ -11,6 +11,7 @@ import useInfinteScroller from "../../../hooks/useInfinteScroller"
 import { Spinner, HStack, Box } from "@chakra-ui/react";
 import { FiPlayCircle } from 'react-icons/fi'
 import InfiniteScrollerComponent from "../../../hooks/infiniteScrollerComponent"
+import VideoPlayer from "../../../components/VideoPlayer"
 
 const Posts = () => {
   const [showUserPosts, setShowUserPosts] = useState(false)
@@ -69,7 +70,7 @@ const Posts = () => {
               }}
             />
           }
-          {post.type === 'WITH_VIDEO_POST' && post?.mediaRef &&
+          {post.type === 'WITH_VIDEO_POST' &&
             <video
               key={index.toString()}
               className="rounded-b-[32px] rounded-tl-[32px] w-[170px] h-[170px] object-cover cursor-pointer z-0"
@@ -78,13 +79,13 @@ const Posts = () => {
                 openUserPosts()
                 setPostID(post?.id)
               }}
-              controls
+              controls={true}
               autoPlay={false}
             >
-              <source src={post?.mediaRef.startsWith('https') ? post?.mediaRef:`${CONFIG.RESOURCE_URL}${post?.mediaRef}`} type="video/mp4" />
+              <source src={post?.mediaRef?.includes("https") ? post?.mediaRef :`${CONFIG.RESOURCE_URL}${post?.mediaRef}`} type="video/mp4" />
             </video>
           }
-          {
+          {/* {
             post.type === 'WITH_VIDEO_POST' && (
               <HStack
                 onClick={() => {
@@ -95,7 +96,7 @@ const Posts = () => {
                 <FiPlayCircle color='white' fontSize={50} />
               </HStack>
             )
-          }
+          } */}
         </Box>
       )
     } else {
@@ -113,7 +114,7 @@ const Posts = () => {
               }}
             />
           }
-          {post.type === 'WITH_VIDEO_POST' && post?.mediaRef &&
+          {post.type === 'WITH_VIDEO_POST' &&
             <video
               key={index.toString()}
               className="rounded-b-[32px] rounded-tl-[32px] w-[170px] h-[170px] object-cover cursor-pointer z-0"
@@ -122,13 +123,13 @@ const Posts = () => {
                 openUserPosts()
                 setPostID(post?.id)
               }}
-              controls={false}
+              controls={true}
               autoPlay={false}
             >
-              <source src={`${CONFIG.RESOURCE_URL}${post?.mediaRef}`} type="video/mp4" />
+              <source src={post?.mediaRef?.includes("https") ? post?.mediaRef :`${CONFIG.RESOURCE_URL}${post?.mediaRef}`} type="video/mp4" />
             </video>
           }
-          {post.type === 'WITH_VIDEO_POST' && (
+          {/* {post.type === 'WITH_VIDEO_POST' && (
             <HStack
               onClick={() => {
                 openUserPosts()
@@ -137,7 +138,7 @@ const Posts = () => {
               position={'absolute'} zIndex={10} fontSize={40} top={'62px'} left={'62px'} cursor={'pointer'} >
               <FiPlayCircle color='white' fontSize={50} />
             </HStack>
-          )}
+          )} */}
         </Box>
       )
     }
