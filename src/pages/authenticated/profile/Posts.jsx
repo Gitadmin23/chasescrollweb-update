@@ -79,7 +79,7 @@ const Posts = () => {
                 openUserPosts()
                 setPostID(post?.id)
               }}
-              controls={true}
+              controls={false}
               autoPlay={false}
             >
               <source src={post?.mediaRef?.includes("https") ? post?.mediaRef :`${CONFIG.RESOURCE_URL}${post?.mediaRef}`} type="video/mp4" />
@@ -123,7 +123,7 @@ const Posts = () => {
                 openUserPosts()
                 setPostID(post?.id)
               }}
-              controls={true}
+              controls={false}
               autoPlay={false}
             >
               <source src={post?.mediaRef?.includes("https") ? post?.mediaRef :`${CONFIG.RESOURCE_URL}${post?.mediaRef}`} type="video/mp4" />
