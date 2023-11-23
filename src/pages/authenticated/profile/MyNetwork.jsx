@@ -320,16 +320,14 @@ const ConnectTab =(props)=> {
   const { sendRequest } = useFetch() 
   const [network, setNetwork] = useState([])
   const [loading, setLoading] = useState("")
-  const [results, setResults] = useState([]);
   const self = userId === currentUserId
   const intObserver = React.useRef();
 
 
   const [page, setPage] = React.useState(0)
-
+  const [results, setResults] = useState([]);
   const { isLoading, data,} = useQuery(['getConnections', userId], () => httpService.get(`/user/get-users-connections/${userId}`), {
-    onSuccess: (data) => {
-      console.log(data?.data);
+    onSuccess: (data) => { 
       setResults(data?.data);
     }
   });

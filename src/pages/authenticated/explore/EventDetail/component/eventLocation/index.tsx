@@ -19,8 +19,7 @@ function EventLocation(props: Props) {
             <div className=' flex w-full items-center gap-3 mt-3 ' >
                 <LocationIcon className="" />
                 <div className='  ' >
-                    <LocationDetail location={location} locationType={locationType} length={200} style={' font-bold text-[#3C41F0]'}  />
-                    
+                    <LocationDetail location={location} locationType={locationType} length={200} style={' font-bold text-[#3C41F0]'}  /> 
                 </div>
             </div>
         </div>

@@ -123,7 +123,9 @@ function CreateEventTicket(props: Props) {
                         }
                         htmlFor="isPaid"  >
                         <Checkbox 
-                            disabled={!brought?.isBought}
+
+                            disabled={!isFree}
+
                             type="checkbox"
                             className="h-4 w-4 text-blue-600 text-sm md:text-base"
                             isChecked={!isFree}
@@ -139,7 +141,7 @@ function CreateEventTicket(props: Props) {
                         }
                         htmlFor="isFree" >
                             <Checkbox 
-                                disabled={!brought?.isBought}
+                                disabled={isFree}
                                 type="checkbox"
                                 className="form-checkbox h-4 w-4 text-blue-600 text-sm md:text-base"
                                 isChecked={isFree}
@@ -268,6 +270,7 @@ function CreateEventTicket(props: Props) {
                 </Select>  
 
                 <div className="flex w-full mt-2 justify-between">
+
                     <button disabled={!brought?.isBought} className="flex" onClick={toggleFunnel}>
                         <OpenFolderIcon />
                         <span className="text-chasescrollBlue underline hover:text-chasescrollDarkBlue ml-2">

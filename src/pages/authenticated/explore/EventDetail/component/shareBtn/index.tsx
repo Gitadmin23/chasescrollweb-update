@@ -21,12 +21,7 @@ function ShareBtn(props: Props) {
     // VITE_BASE_URL
     const url_link = import.meta.env.VITE_DOMAIN
     const [showModal, setShowModal] = useState(false);
-    const [share, setShare] = useState(false);
-    // const [tab, setTab] = useState(false)
-
-    // const handleEmail = () => {
-    //     setTab(true)
-    // }
+    const [share, setShare] = useState(false); 
 
     return (
         <>

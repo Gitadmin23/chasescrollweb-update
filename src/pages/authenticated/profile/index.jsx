@@ -154,6 +154,7 @@ const Profile_1 = () => {
       `${SEND_FRIEND_REQUEST}`,
       "POST",
       { toUserID: userId },
+
       { Authorization: `Bearer ${token}` }
     )
     if (data) {
@@ -189,14 +190,14 @@ const Profile_1 = () => {
     fetchNetwork()
   }, [userId])
 
-  useEffect(() => {
-    if (ownNetwork) {
-      const isMyFriend = ownNetwork.some(connect => connect.userId === userId)
+  // useEffect(() => {
+  //   if (ownNetwork) {
+  //     const isMyFriend = ownNetwork.some(connect => connect.userId === userId)
 
-      if (isMyFriend) setDisplayConnect(false)
-      else setDisplayConnect(true)
-    }
-  }, [network])
+  //     if (isMyFriend) setDisplayConnect(false)
+  //     else setDisplayConnect(true)
+  //   }
+  // }, [network])
 
   const handleButtonClick = componentName => {
     if (
@@ -324,7 +325,7 @@ const Profile_1 = () => {
                 <SecondaryNavbar
                   activeComponent={activeComponent}
                   handleButtonClick={handleButtonClick}
-                  networkCount={network.length}
+                  networkCount={network?.length}
                   postCount={posts?.totalElements}
                   eventCount={events?.totalElements}
                   communityCount={communities?.totalElements}
