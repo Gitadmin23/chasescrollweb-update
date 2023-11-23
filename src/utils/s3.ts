@@ -1,14 +1,10 @@
-// import S3 from 'react-s3';
+import { S3 } from 'aws-sdk';
 
-// export const s3_config = {
-//     bucketName: import.meta.env.VITE_AWS_BUCKET_NAME,
-//     dirName: 'media', /* optional */
-//     region: import.meta.env.VITE_AWS_REGION,
-//     accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY,
-//     secretAccessKey: import.meta.env.VITE_AWS_SECRET_KEY,
-// }
-
-const ReactS3Client = '';
+const s3 = new S3({
+    accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY,
+    secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
+    region: import.meta.env.VITE_AWS_REGION
+})
 
 
-export default ReactS3Client
+export default s3;

@@ -1,3 +1,4 @@
+import React from 'react';
 import PropTypes from "prop-types"
 import { useEffect, useState } from "react"
 import OverlayWrapper from "../OverlayWrapper"
@@ -17,8 +18,10 @@ import { toast } from "react-toastify"
 import { videoConfig } from "../../constants"
 import { Avatar, Spinner } from '@chakra-ui/react'
 import { useQueryClient } from "react-query"
-import FileUploader from "../FileUploader"
+// import FileUploader from "../FileUploader"
 import { unescape } from "lodash"
+import AWSHook from "@/hooks/awsHook"
+
 
 const UploadImage = ({ toggleFileUploader, loadMore }) => {
   const [imageSrc, setImageSrc] = useState(null)
@@ -32,10 +35,31 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
   const { sendRequest, isLoading } = useFetch()
   const { userName, userId, token } = useAuth();
   const [url, setUrl] = useState('');
+  const [fileType, setFileType] = React.useState('');
+
+  const VIDEOFORMATS = ['mp4', 'webm'];
+  const IMAGEFORMATS = ['png', 'jpeg', 'jpeg', 'svg'];
+
+  const { fileUploadHandler, loading: fileUploading, uploadedFile } = AWSHook();
   // const ReactS3Client = new S3(videoConfig);
 
   // query client
   const queryClient = useQueryClient();
+
+  React.useEffect(() => {
+    if (uploadedFile.length > 0) {
+      console.log(uploadedFile);
+        if (fileType === 'image') {
+          setVideoSrc(null);
+          setImageSrc(uploadedFile[0].url);
+          setUrl(uploadedFile[0].url)
+        } else if (fileType === 'video') {
+          setImageSrc(null);
+          setVideoSrc(uploadedFile[0].url);
+          setUrl(uploadedFile[0].url);
+        }
+    }
+  }, [fileType, uploadedFile])
 
   const handleChange = ({ target: { value } }) => {
     setCaption(value)
@@ -43,17 +67,17 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
 
   const toggleCaption = () => setShowCaption(state => !state);
 
-  const handlePick = (url) => {
-    if (url !== undefined || url !== null) {
-      if (url.includes('mp4')) {
-        setVideoSrc(url);
-        setUrl(url);
-      }else {
-        setImageSrc(url);
-        setUrl(url);
-      }
-    }
-  }
+  // const handlePick = (url) => {
+  //   if (url !== undefined || url !== null) {
+  //     if (url.includes('mp4')) {
+  //       setVideoSrc(url);
+  //       setUrl(url);
+  //     }else {
+  //       setImageSrc(url);
+  //       setUrl(url);
+  //     }
+  //   }
+  // }
 
   const createPost = async () => {
     if (isLoading) {
@@ -122,34 +146,31 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
     setCount(caption.length)
   }, [caption])
 
+  
+
   async function handleFileInputChange(event) {
     // if (event) {
     //   const data = await uploader(event.target.files[0]);
     //   console.log(data);
     //   return;
     // }
-    console.log(event.target.files[0]);
-    // if (event.target.files[0].type.startsWith('video/') && event.target.files[0].size > 150000000) {
-    //   toast.warning("Video size should be less than 15MB");
-    //   return;
-    // }
-    
+    // console.log(event.target.files[0]);
+    if (event.target.files[0].type.startsWith('video/') && event.target.files[0].size > 250000000) {
+      toast.warning("Video size should be less than 15MB");
+      return;
+    }
+
     const file = event.target.files[0]
     setPostFile(file)
 
-    const mediaType = file.type;
-
-    if (mediaType.startsWith('image/')) {
-      const imageUrl = URL.createObjectURL(file);
-      setVideoSrc(null);
-      setImageSrc(imageUrl);
-      console.log({ imageUrl });
-    } else if (mediaType.startsWith('video/')) {
-      const videoUrl = URL.createObjectURL(file);
-      setImageSrc(null);
-      setVideoSrc(videoUrl);
-      console.log({ videoUrl });
+    if (file.type.startsWith('video/')) {
+      setFileType('video')
+    } else if (file.type.startsWith('image/')) {
+      setFileType('image')
     }
+
+    fileUploadHandler(event.target.files);
+    
   }
 
   const goBack = () => {
@@ -171,6 +192,7 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
                   <ThumbsUp />
                 </div>
                 <p className="text-center">Your post is live</p>
+               
               </div>
             </div>
           </div>
@@ -273,6 +295,7 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
                     />
                     Select from your desktop
                   </label>
+                  { fileUploading && 'Uploading file...'}
                   {/* <FileUploader onSuccess={handlePick} />
                   </label> */}
                 </div>
