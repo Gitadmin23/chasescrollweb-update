@@ -90,7 +90,7 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
     setLoading(true);
 
 
-    if (url.includes('.mp4')) {
+    if (url.includes('.mp4') || url.includes('.mkv')) {
       sendRequest(
         CREATE_POST,
         "POST",
@@ -155,8 +155,8 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
     //   return;
     // }
     // console.log(event.target.files[0]);
-    if (event.target.files[0].type.startsWith('video/') && event.target.files[0].size > 250000000) {
-      toast.warning("Video size should be less than 15MB");
+    if (event.target.files[0].type.startsWith('video/') && event.target.files[0].size > 300000000) {
+      toast.warning("Video size should be less than 250MB");
       return;
     }
 
@@ -177,6 +177,7 @@ const UploadImage = ({ toggleFileUploader, loadMore }) => {
     setImageSrc(null)
     setVideoSrc(null);
   }
+  console.log(videoSrc);
 
   return (
     <OverlayWrapper handleClose={toggleFileUploader}>
